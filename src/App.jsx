@@ -6,15 +6,20 @@ import { Navbar } from './Components/Navbar'
 import { Notes } from './pages/Notes/Index'
 import { PrivateRoutes } from './utils/PrivateRoutes'
 import { useAuth } from './Context/Auth'
+import './Style/homeAndNav.css'
+import './Style/Register.css'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   const { user } = useAuth()
   return (
     <div>
+      <ToastContainer position="top-right" autoClose={5000} />
       <Navbar />
 
       <Routes>
-        
+
         <Route element={<PrivateRoutes />}>
           <Route path="/notes" element={<Notes />} />
           <Route />
@@ -30,6 +35,7 @@ const App = () => {
           user? <Navigate to='/'/> : <Login/>
         } />
       </Routes>
+
     </div>
   );
 }
