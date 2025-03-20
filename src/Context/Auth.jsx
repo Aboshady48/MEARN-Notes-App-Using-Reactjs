@@ -1,39 +1,59 @@
 import axios from "axios";
 import { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import {jwtDecode} from "jwt-decode"; 
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        return { _id: decoded.id, token }; 
+      } catch (error) {
+        console.error("Invalid token:", error);
+        return null;
+      }
+    }
+    return null;
+  });
 
   // Check localStorage for an existing token on app load
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      setUser(token);
+      try {
+        const decoded = jwtDecode(token);
+        setUser({ _id: decoded.id, token });
+      } catch (error) {
+        console.error("Invalid token:", error);
+        setUser(null);
+      }
     }
   }, []);
 
+  // ✅ Login function
   const loginUser = async (userData) => {
     try {
       console.log("Logging in with:", userData);
 
       const { data } = await axios.post(
-        "https://aboshady-mearn-stack-notes-endpoints.vercel.app/api/v1/users/login",
+        "http://localhost:3000/api/v1/users/login",
         userData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        { headers: { "Content-Type": "application/json" } }
       );
 
       console.log("Login Response:", data);
 
       if (data.success) {
-        setUser(data.token);
+        const decoded = jwtDecode(data.token);
+        setUser({ _id: decoded.id, token: data.token });
+
         localStorage.setItem("token", data.token);
+        localStorage.setItem("userId", decoded.id); // Save user ID separately
+
         toast.success("Login successful");
       } else {
         toast.error(data.message || "Login failed");
@@ -44,25 +64,26 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // ✅ Register function
   const RegisterUser = async (userData) => {
     try {
       console.log("Sending user data:", userData);
 
       const { data } = await axios.post(
-        "https://aboshady-mearn-stack-notes-endpoints.vercel.app/api/v1/users/register",
+        "http://localhost:3000/api/v1/users/register",
         userData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        { headers: { "Content-Type": "application/json" } }
       );
 
       console.log("Response data:", data);
 
       if (data.success) {
-        setUser(data.token);
+        const decoded = jwtDecode(data.token);
+        setUser({ _id: decoded.id, token: data.token });
+
         localStorage.setItem("token", data.token);
+        localStorage.setItem("userId", decoded.id); // Save user ID
+
         toast.success("Registration successful");
       } else {
         toast.error(data.message || "Registration failed");
@@ -73,34 +94,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logoutUser = async () => {
-    try {
-      localStorage.removeItem("token");
-      setUser(null);
-      toast.success("Logged out successfully");
-    } catch (error) {
-      console.error("Logout Error:", error);
-      toast.error("Failed to logout");
-    }
+  // ✅ Logout function
+  const logoutUser = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    setUser(null);
+    toast.success("Logged out successfully");
   };
 
-  const ContextData = {
-    user,
-    loginUser,
-    RegisterUser,
-    logoutUser,
-  };
+  const ContextData = { user, loginUser, RegisterUser, logoutUser };
 
   return (
-    <AuthContext.Provider value={ContextData}>
-        {children}
-        </AuthContext.Provider>
+    <AuthContext.Provider value={ContextData}>{children}</AuthContext.Provider>
   );
 };
 
 // Custom hook to use AuthContext
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);
 
 export default AuthContext;

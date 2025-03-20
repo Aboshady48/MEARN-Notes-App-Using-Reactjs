@@ -1,0 +1,169 @@
+/* Notes Container */
+.notes-container {
+  background-color: #F5EFE7;
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Notes Grid - Masonry Style */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+  max-width: 1200px;
+  width: 100%;
+  justify-content: center;
+}
+
+/* Note Card - Google Keep Style */
+.note-card {
+  background-color: #D8C4B6;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  text-align: left;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  break-inside: avoid; /* Prevent breaking in masonry layout */
+}
+
+.note-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* Note Title */
+.note-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #213555;
+  margin-bottom: 5px;
+}
+
+/* Note Description */
+.note-description {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 10px;
+  word-wrap: break-word;
+}
+
+/* Buttons */
+.note-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+/* Update Button */
+.update-btn {
+  background-color: #213555;
+  color: #F5EFE7;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.update-btn:hover {
+  background-color: #16294a;
+}
+
+/* Delete Button */
+.delete-btn {
+  background-color: #b22222;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.delete-btn:hover {
+  background-color: #8b0000;
+}
+
+/* Create Note Button */
+.create-note-button {
+  margin-top: 20px;
+}
+
+.create-btn {
+  background-color: #213555;
+  color: #F5EFE7;
+  padding: 12px 20px;
+  font-size: 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.create-btn:hover {
+  background-color: #16294a;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .notes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+/* Loading Effect - Google Keep Style */
+.loading-text {
+  font-size: 18px;
+  color: #213555;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.loading-effect {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.loading-effect::after {
+  content: "";
+  width: 40px;
+  height: 40px;
+  border: 4px solid #213555;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Fixed Create Note Button */
+.create-note-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.create-btn {
+  background-color: #213555;
+  color: #F5EFE7;
+  padding: 12px 20px;
+  font-size: 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.create-btn:hover {
+  background-color: #16294a;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}

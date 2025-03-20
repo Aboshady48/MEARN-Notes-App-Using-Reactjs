@@ -22,9 +22,10 @@ export const Navbar = () => {
             {/* Navbar Links */}
             <div className={`navbar-links ${menuOpen ? "active" : ""}`} onClick={() => setMenuOpen(false)}>
                 <Link to="/">Home</Link>
-                {user && <Link to="/notes">Notes</Link>}
+                {user && <Link to="/notes">My Notes</Link>} 
+                {user && <Link to="/notes/create">Create Note</Link>}
                 {user ? (
-                    <Link to="/" className="navbar-links" onClick={logoutUser}>Logout</Link>
+                    <Link to="/" className="logout" onClick={logoutUser}>Logout</Link>
                 ) : (
                     <>
                         <Link to="/register">Register</Link>
