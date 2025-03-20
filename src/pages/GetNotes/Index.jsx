@@ -54,26 +54,6 @@ export const Notes = () => {
     getAllNotes();
   }, [user]);
 
-  const handleDeleteNote = async (id) => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      toast.error("Authentication token is missing!");
-      return;
-    }
-
-    try {
-      await axios.delete(`http://localhost:3000/api/v1/notes/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setNotes((prevNotes) => prevNotes.filter((note) => note._id !== id));
-      toast.success("Note deleted successfully!");
-    } catch (error) {
-      console.error("Error deleting note:", error);
-      toast.error(error.response?.data?.message || "Failed to delete note");
-    }
-  };
-
   if (loading)
     return (
       <div className="loading-effect">
@@ -98,15 +78,10 @@ export const Notes = () => {
             <p className="note-description">{note.description}</p>
 
             <div className="note-buttons">
-              <Link to={`/notes/update/${note._id}`} className="update-btn">
+              {/* <Link to={`/notes/update/${note._id}`} className="update-btn">
                 Update
-              </Link>
-              <button
-                className="delete-btn"
-                onClick={() => handleDeleteNote(note._id)}
-              >
-                Delete
-              </button>
+              </Link> */}
+             
             </div>
           </div>
         ))}

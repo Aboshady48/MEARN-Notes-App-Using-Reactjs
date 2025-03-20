@@ -13,6 +13,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { CreateNote } from "./pages/CreateNote/Index";
 import "./Style/CreateNote.css";
 import './Style/notes.css'
+// import { UpdateNote } from "./pages/UpdateNotes/Index";
+
 const App = () => {
   const { user } = useAuth();
   return (
@@ -24,10 +26,14 @@ const App = () => {
         <Route element={<PrivateRoutes />}>
           <Route path="/notes" element={<Notes />} />
           <Route path="/notes/create" element={<CreateNote />} />
+          {/* <Route path="/notes/update/:id" element={<UpdateNote />} /> */}
         </Route>
 
         <Route path="/" element={<Home />} />
-        <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
+        <Route
+          path="/register"
+          element={user ? <Navigate to="/" /> : <Register />}
+        />
         <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
       </Routes>
     </div>
